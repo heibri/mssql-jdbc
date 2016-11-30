@@ -1303,25 +1303,28 @@ public class SQLServerCallableStatement extends SQLServerPreparedStatement imple
 			SQLServerStatement s = (SQLServerStatement) connection.createStatement();
 			ThreePartNamesParser translator = new ThreePartNamesParser();
 			translator.parseProcedureNameIntoParts(procedureName);
-			StringBuilder metaQuery = new StringBuilder("exec sp_sproc_columns ");
+			StringBuilder metaQuery = new StringBuilder("exec ");
+			StringBuilder metaQueryParams = new StringBuilder();
 			if(null !=translator.getDatabasePart())
 			{
-				metaQuery.append("@procedure_qualifier=");
 				metaQuery.append(translator.getDatabasePart());
-				metaQuery.append(", ");
+				metaQuery.append(".sys.");
+				metaQueryParams.append("@procedure_qualifier=");
+				metaQueryParams.append(translator.getDatabasePart());
+				metaQueryParams.append(", ");
 			}
 			if(null !=translator.getOwnerPart())
 			{
-				metaQuery.append("@procedure_owner=");
-				metaQuery.append(translator.getOwnerPart());
-				metaQuery.append(", ");
+				metaQueryParams.append("@procedure_owner=");
+				metaQueryParams.append(translator.getOwnerPart());
+				metaQueryParams.append(", ");
 			}
 			if(null != translator.getProcedurePart())
 			{
 				// we should always have a procedure name part
-				metaQuery.append("@procedure_name=");
-				metaQuery.append(translator.getProcedurePart());
-				metaQuery.append(" , @ODBCVer=3");
+				metaQueryParams.append("@procedure_name=");
+				metaQueryParams.append(translator.getProcedurePart());
+				metaQueryParams.append(" , @ODBCVer=3");
 			}
 			else
 			{
@@ -1331,6 +1334,8 @@ public class SQLServerCallableStatement extends SQLServerPreparedStatement imple
 				Object[] msgArgs = {columnName, ""};
 				SQLServerException.makeFromDriverError(connection, this, form.format(msgArgs), "07009", false);
 			}
+			metaQuery.append("sp_sproc_columns ");
+			metaQuery.append(metaQueryParams);
 			
 			ResultSet rs = s.executeQueryInternal(metaQuery.toString());
 			paramNames = new ArrayList<String>();
