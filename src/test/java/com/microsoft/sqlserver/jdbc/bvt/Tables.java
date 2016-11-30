@@ -1,3 +1,5 @@
+package com.microsoft.sqlserver.jdbc.bvt;
+
 /*
 File: Tables.java
 Contents: Creates and populates the tables.

@@ -1,3 +1,5 @@
+package com.microsoft.sqlserver.jdbc.bvt;
+
 /*
 File: bvtTest.java
 Contents: Basic verification tests.

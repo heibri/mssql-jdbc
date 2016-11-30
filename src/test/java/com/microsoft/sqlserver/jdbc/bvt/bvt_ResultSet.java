@@ -1,3 +1,5 @@
+package com.microsoft.sqlserver.jdbc.bvt;
+
 /*
 File: bvt_ResultSet.java
 Contents: Performs the verification on the retrieved resultSet.

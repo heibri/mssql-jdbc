@@ -1,3 +1,5 @@
+package com.microsoft.sqlserver.jdbc.bvt;
+
 /*
 File: Values.java
 Contents: Creates values for populating tables.
